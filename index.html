@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;1,200&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>Tuotevarasto</title>
+</head>
+<body>
+    <h1>Vaatekaupan tuotteet</h1>
+    
+    <form id="tuote-varasto">
+        <input id="vaate-vaate" type="text" placeholder="vaate" required/>
+        <input id="vaate-vari" type="text" placeholder="vaatteen väri" required/>
+        <input id="vaate-nro" type="text" placeholder="tuotteen nro" required/>     
+    <br>
+    <br>
+    <button id="tallenna">Tallenna tuote</button>
+    <button id="lataa">Lataa tuotteet</button>
+    <br>   
+    </form>
+    <hr>
+    <div class="alue">
+        <ul id="tuotteet"></ul>
+    </div>
+
+
+    <script>
+    const tuoteVarasto = document.getElementById("tuote-varasto");
+    const vaateVaate = document.getElementById("vaate-vaate");
+    const vaateVari = document.getElementById("vaate-vari");
+    const vaateNro = document.getElementById("vaate-nro");
+    const tallenna = document.getElementById("tallenna");
+    const lataa = document.getElementById("lataa");
+    const tuotteet = document.getElementById("tuotteet");
+
+    let tuoteStorage = localStorage.getItem("tuotteet")
+        ? JSON.parse(localStorage.getItem("tuotteet"))
+        : [];
+
+    tuoteVarasto.addEventListener("submit", (e) => {
+        e.preventDefault();
+        tuoteStorage.push(vaateVaate.value + ", " + vaateVari.value + ", " + vaateNro.value);
+        localStorage.setItem("tuotteet", JSON.stringify(tuoteStorage));
+        listBuilder(vaateVaate.value + ", " + vaateVari.value + ", " + vaateNro.value);
+        vaateVaate.value = "";
+        vaateVari.value = "";
+        vaateNro.value = "";
+        });
+
+    const listBuilder = (text) => {
+        const tuote = document.createElement("li");
+        tuote.innerHTML = text + ' <button onclick="deleteTuote(this)">x</button>';
+        tuotteet.appendChild(tuote);
+    };
+
+    lataa.addEventListener("click", (e) => {
+        e.preventDefault();
+        const getTuotteet = JSON.parse(localStorage.getItem("tuotteet"));
+        getTuotteet.forEach((tuote) => {
+            listBuilder(tuote) + ", ";
+        });
+    })
+
+
+
+    const deleteTuote = (btn) => {
+        let el = btn.parentNode;
+        const index = [...el.parentElement.children].indexOf(el);
+        tuoteStorage.splice(index, 1);
+        localStorage.setItem("tuotteet", JSON.stringify(tuoteStorage));
+        el.remove();
+    };
+    </script>
+</body>
+</html>

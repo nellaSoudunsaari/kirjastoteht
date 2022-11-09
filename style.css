@@ -1,0 +1,21 @@
+h1, button, ul {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 400;
+}
+
+#vaate-vaate, #vaate-vari, #vaate-nro{
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 300;
+    font-style: italic;
+}
+
+.alue {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    width: 500px;
+    height: 400px;
+    border: 2px solid black;
+    margin: 10px;
+    overflow: auto;
+}
